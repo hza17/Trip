@@ -1,0 +1,97 @@
+--- src/components/workspace/AddBusinessWizard.tsx
++++ src/components/workspace/AddBusinessWizard.tsx
+@@ -29,21 +29,25 @@
+   const [type, setType] = useState<BusinessType | null>(null);
+   const [name, setName] = useState('');
+   const [parentId, setParentId] = useState<string>('none');
++  const [address, setAddress] = useState('');
++  const [facilityCount, setFacilityCount] = useState<number | ''>('');
+   const [modules, setModules] = useState<ModuleType[]>(['Dashboard', 'Settings']);
+ 
+   const handleNext = () => {
+-    if (step < 3) setStep(step + 1);
++    if (step < 4) setStep(step + 1);
+     else {
+       const newBusiness: Business = {
+         id: `b${Date.now()}`,
+         name,
+         type: type!,
+         status: 'Pending',
+         modules,
+         parentId: parentId !== 'none' ? parentId : undefined,
+-        createdAt: new Date().toISOString().split('T')[0]
++        createdAt: new Date().toISOString().split('T')[0],
++        address: address || undefined,
++        facilityCount: facilityCount !== '' ? Number(facilityCount) : undefined
+       };
+       onComplete(newBusiness);
+     }
+   };
+ 
+@@ -58,15 +62,15 @@
+           <ArrowRight size={20} />
+           <span className="font-bold">بازگشت</span>
+         </button>
+         <div className="mx-auto flex items-center gap-2">
+-          {[1, 2, 3].map(i => (
++          {[1, 2, 3, 4].map(i => (
+             <React.Fragment key={i}>
+               <div className={cn("w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-colors", step >= i ? "bg-blue-600 text-white" : "bg-slate-200 dark:bg-slate-800 text-slate-500")}>
+                 {i}
+               </div>
+-              {i < 3 && <div className={cn("w-12 h-1 rounded-full transition-colors", step > i ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-800")} />}
++              {i < 4 && <div className={cn("w-12 h-1 rounded-full transition-colors", step > i ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-800")} />}
+             </React.Fragment>
+           ))}
+         </div>
+         <div className="w-24"></div> {/* Spacer for centering */}
+@@ -128,7 +132,32 @@
+           )}
+ 
+           {step === 3 && (
++            <div className="animate-in fade-in slide-in-from-right-4 duration-500">
++              <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-2">جزئیات و امکانات</h2>
++              <p className="text-slate-500 dark:text-slate-400 mb-8">لطفاً آدرس و ظرفیت کسب‌وکار را وارد کنید.</p>
++              
++              <div className="space-y-6">
++                <div>
++                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">آدرس</label>
++                  <textarea 
++                    value={address}
++                    onChange={e => setAddress(e.target.value)}
++                    placeholder="آدرس دقیق شعبه یا مجموعه"
++                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none h-24"
++                  />
++                </div>
++                <div>
++                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">ظرفیت / تعداد واحد (مثلاً تعداد اتاق، میز یا پرسنل)</label>
++                  <input 
++                    type="number" 
++                    value={facilityCount}
++                    onChange={e => setFacilityCount(e.target.value === '' ? '' : Number(e.target.value))}
++                    placeholder="مثال: 50"
++                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-left"
++                    dir="ltr"
++                  />
++                </div>
++              </div>
++            </div>
++          )}
++
++          {step === 4 && (
+             <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+               <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-2">امکانات مورد نیاز</h2>
+               <p className="text-slate-500 dark:text-slate-400 mb-8">ماژول‌هایی که برای این کسب‌وکار نیاز دارید را فعال کنید.</p>
+@@ -165,9 +194,9 @@
+             </button>
+             <button 
+               onClick={handleNext}
+               disabled={(step === 1 && !type) || (step === 2 && !name)}
+               className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-blue-500/30"
+             >
+-              {step === 3 ? 'ثبت و راه‌اندازی' : 'مرحله بعد'}
+-              {step < 3 && <ChevronLeft size={20} />}
++              {step === 4 ? 'ثبت و راه‌اندازی' : 'مرحله بعد'}
++              {step < 4 && <ChevronLeft size={20} />}
+             </button>
+           </div>

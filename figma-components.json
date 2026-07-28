@@ -1,0 +1,151 @@
+{
+  "Buttons": {
+    "Primary": {
+      "State: Default": {
+        "BackgroundColor": "{Color.Primary (Orange).600}",
+        "TextColor": "#ffffff",
+        "BorderRadius": "{BorderRadius.xl}",
+        "PaddingX": "16px",
+        "PaddingY": "10px",
+        "BoxShadow": "0 4px 6px -1px rgba(224, 79, 0, 0.2)",
+        "Typography": "{Typography.FontSize.xs} {Typography.FontWeight.bold}"
+      },
+      "State: Hover": {
+        "BackgroundColor": "{Color.Primary (Orange).700}",
+        "BoxShadow": "0 10px 15px -3px rgba(224, 79, 0, 0.2)",
+        "Transform": "translateY(-2px)"
+      },
+      "State: Disabled": {
+        "BackgroundColor": "{Color.Neutral (Slate).300}",
+        "TextColor": "{Color.Neutral (Slate).500}",
+        "BoxShadow": "none"
+      }
+    },
+    "Secondary (Outline)": {
+      "State: Default": {
+        "BackgroundColor": "transparent",
+        "BorderColor": "{Color.Neutral (Slate).200}",
+        "BorderWidth": "1px",
+        "TextColor": "{Color.Neutral (Slate).600}",
+        "BorderRadius": "{BorderRadius.xl}",
+        "PaddingX": "16px",
+        "PaddingY": "10px"
+      },
+      "State: Hover": {
+        "BackgroundColor": "{Color.Neutral (Slate).50}"
+      }
+    },
+    "Ghost (Tinted)": {
+      "State: Default": {
+        "BackgroundColor": "rgba(224, 79, 0, 0.1)",
+        "TextColor": "{Color.Primary (Orange).600}",
+        "BorderRadius": "{BorderRadius.xl}",
+        "PaddingX": "12px",
+        "PaddingY": "8px",
+        "Typography": "{Typography.FontSize.sm} {Typography.FontWeight.bold}"
+      },
+      "State: Hover": {
+        "BackgroundColor": "rgba(224, 79, 0, 0.2)"
+      }
+    }
+  },
+  "Inputs": {
+    "TextField": {
+      "State: Default": {
+        "BackgroundColor": "rgba(248, 250, 252, 0.5)",
+        "BorderColor": "rgba(226, 232, 240, 0.5)",
+        "BorderWidth": "1px",
+        "BorderRadius": "{BorderRadius.xl}",
+        "Padding": "10px",
+        "TextColor": "{Color.Text.LightMode}",
+        "Typography": "{Typography.FontSize.xs} {Typography.FontWeight.bold}"
+      },
+      "State: Focus": {
+        "BorderColor": "rgba(224, 79, 0, 0.5)",
+        "FocusRing": "2px solid rgba(224, 79, 0, 0.2)"
+      },
+      "State: DarkMode": {
+        "BackgroundColor": "rgba(2, 6, 23, 0.5)",
+        "BorderColor": "rgba(30, 41, 59, 0.5)",
+        "TextColor": "{Color.Text.DarkMode}"
+      }
+    },
+    "Checkbox": {
+      "State: Checked": {
+        "BackgroundColor": "{Color.Primary (Orange).500}",
+        "BorderRadius": "{BorderRadius.sm}",
+        "Width": "16px",
+        "Height": "16px"
+      }
+    }
+  },
+  "Cards": {
+    "Main Glass Container": {
+      "BackgroundColor": "rgba(255, 255, 255, 0.7)",
+      "BackdropBlur": "blur(24px)",
+      "BorderColor": "rgba(255, 255, 255, 0.5)",
+      "BorderWidth": "1px",
+      "BorderRadius": "{BorderRadius.3xl}",
+      "BoxShadow": "0 20px 25px -5px rgba(226, 232, 240, 0.5)"
+    },
+    "Inner Content Card": {
+      "BackgroundColor": "{Color.Neutral (Slate).50}",
+      "BorderColor": "{Color.Neutral (Slate).100}",
+      "BorderWidth": "1px",
+      "BorderRadius": "{BorderRadius.2xl}",
+      "Padding": "16px"
+    },
+    "Interactive Selectable Card": {
+      "State: Default": {
+        "BackgroundColor": "{Color.Neutral (Slate).50}",
+        "BorderColor": "{Color.Neutral (Slate).200}",
+        "BorderWidth": "1px",
+        "BorderRadius": "{BorderRadius.2xl}",
+        "Cursor": "pointer"
+      },
+      "State: Selected": {
+        "BackgroundColor": "rgba(224, 79, 0, 0.05)",
+        "BorderColor": "{Color.Primary (Orange).600}",
+        "BoxShadow": "0 0 0 2px rgba(224, 79, 0, 0.2)"
+      }
+    }
+  },
+  "Badges & Tags": {
+    "Primary Pill": {
+      "BackgroundColor": "rgba(224, 79, 0, 0.1)",
+      "TextColor": "{Color.Primary (Orange).600}",
+      "BorderRadius": "{BorderRadius.full}",
+      "PaddingX": "12px",
+      "PaddingY": "4px",
+      "Typography": "{Typography.FontSize.xss} {Typography.FontWeight.bold} uppercase",
+      "LetterSpacing": "0.05em"
+    },
+    "Success Pill": {
+      "BackgroundColor": "rgba(0, 194, 97, 0.1)",
+      "TextColor": "{Color.Secondary (Mint Green).600}",
+      "BorderRadius": "{BorderRadius.full}",
+      "PaddingX": "12px",
+      "PaddingY": "4px",
+      "Typography": "{Typography.FontSize.xss} {Typography.FontWeight.bold}"
+    }
+  },
+  "Tabs & Navigation": {
+    "Segmented Control Container": {
+      "BackgroundColor": "{Color.Neutral (Slate).100}",
+      "BorderRadius": "{BorderRadius.2xl}",
+      "Padding": "4px"
+    },
+    "Tab Item": {
+      "State: Active": {
+        "BackgroundColor": "{Color.Primary (Orange).600}",
+        "TextColor": "#ffffff",
+        "BorderRadius": "{BorderRadius.xl}",
+        "BoxShadow": "0 4px 6px -1px rgba(224, 79, 0, 0.2)"
+      },
+      "State: Inactive": {
+        "BackgroundColor": "transparent",
+        "TextColor": "{Color.Neutral (Slate).500}"
+      }
+    }
+  }
+}

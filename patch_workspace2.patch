@@ -1,0 +1,201 @@
+--- src/components/BusinessWorkspace.tsx
++++ src/components/BusinessWorkspace.tsx
+@@ -7,7 +7,7 @@
+   LogOut, Briefcase, Bell, ArrowRight
+ } from 'lucide-react';
+ import { cn } from '@/lib/utils';
++import { Modal } from './Modal';
+ 
+ type ModuleType = 'Rooms' | 'Reservations' | 'Restaurant' | 'Spa' | 'Menu' | 'Finance' | 'Reports' | 'Settings' | 'Team' | 'Orders' | 'Customers' | 'CheckInOut';
+ type BusinessType = 'Hotel' | 'Restaurant' | 'Entertainment' | 'Travel Agency' | 'Accommodation' | 'Other';
+@@ -79,6 +79,16 @@
+   const [newBizType, setNewBizType] = useState<BusinessType | null>(null);
+   const [newBizParent, setNewBizParent] = useState<string>('none');
+   const [newBizName, setNewBizName] = useState('');
++
++  // Team Management State
++  const [teamMembers, setTeamMembers] = useState([
++    { id: 't1', name: 'علی محمدی', email: 'ali@example.com', role: 'Restaurant Manager', modules: ['Orders', 'Menu', 'Reservations', 'Customers'] },
++    { id: 't2', name: 'مریم حسینی', email: 'maryam@example.com', role: 'Receptionist', modules: ['CheckInOut', 'Reservations'] }
++  ]);
++  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
++  const [inviteEmail, setInviteEmail] = useState('');
++  const [inviteRole, setInviteRole] = useState('Manager');
++  const [inviteModules, setInviteModules] = useState<ModuleType[]>([]);
+ 
+   const activeBusiness = businesses.find(b => b.id === activeBusinessId);
+   const userPerms = activeBusiness ? mockUser.permissions[activeBusiness.id] || [] : [];
+@@ -101,6 +111,27 @@
+     setNewBizName('');
+     setNewBizParent('none');
+   };
++
++  const handleInviteUser = () => {
++    if (!inviteEmail) return;
++    const newMember = {
++      id: `t${Date.now()}`,
++      name: 'کاربر جدید', // Since we only invite by email, name is pending
++      email: inviteEmail,
++      role: inviteRole,
++      modules: inviteModules,
++    };
++    setTeamMembers([...teamMembers, newMember]);
++    setIsInviteModalOpen(false);
++    setInviteEmail('');
++    setInviteRole('Manager');
++    setInviteModules([]);
++  };
++
++  const toggleInviteModule = (mod: ModuleType) => {
++    setInviteModules(prev => 
++      prev.includes(mod) ? prev.filter(m => m !== mod) : [...prev, mod]
++    );
++  };
+ 
+   return (
+     <div className="fixed inset-0 z-50 bg-slate-50 dark:bg-slate-900 flex flex-col" dir="rtl">
+@@ -256,7 +287,7 @@
+                     <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                       <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                         <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">مدیریت تیم (Team Management)</h3>
+-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-blue-700 transition-colors">
++                        <button onClick={() => setIsInviteModalOpen(true)} className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-blue-700 transition-colors">
+                           <Plus size={16} /> دعوت عضو جدید
+                         </button>
+                       </div>
+@@ -271,55 +302,29 @@
+                             </tr>
+                           </thead>
+                           <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+-                            <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+-                              <td className="px-6 py-4">
+-                                <div className="flex items-center gap-3">
+-                                  <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 flex items-center justify-center font-bold">A</div>
+-                                  <div>
+-                                    <div className="font-bold text-slate-900 dark:text-white">علی محمدی</div>
+-                                    <div className="text-xs text-slate-500">ali@example.com</div>
+-                                  </div>
+-                                </div>
+-                              </td>
+-                              <td className="px-6 py-4">
+-                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+-                                  Restaurant Manager
+-                                </span>
+-                              </td>
+-                              <td className="px-6 py-4 max-w-[200px]">
+-                                <div className="flex flex-wrap gap-1">
+-                                  <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">Orders</span>
+-                                  <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">Menu</span>
+-                                  <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">Reservations</span>
+-                                  <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">Customers</span>
+-                                </div>
+-                              </td>
+-                              <td className="px-6 py-4">
+-                                <button className="text-blue-600 dark:text-blue-400 text-sm font-bold hover:underline">ویرایش دسترسی</button>
+-                              </td>
+-                            </tr>
+-                            <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+-                              <td className="px-6 py-4">
+-                                <div className="flex items-center gap-3">
+-                                  <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 flex items-center justify-center font-bold">M</div>
+-                                  <div>
+-                                    <div className="font-bold text-slate-900 dark:text-white">مریم حسینی</div>
+-                                    <div className="text-xs text-slate-500">maryam@example.com</div>
+-                                  </div>
+-                                </div>
+-                              </td>
+-                              <td className="px-6 py-4">
+-                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+-                                  Receptionist
+-                                </span>
+-                              </td>
+-                              <td className="px-6 py-4 max-w-[200px]">
+-                                <div className="flex flex-wrap gap-1">
+-                                  <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">CheckInOut</span>
+-                                  <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">Reservations</span>
+-                                </div>
+-                              </td>
+-                              <td className="px-6 py-4">
+-                                <button className="text-blue-600 dark:text-blue-400 text-sm font-bold hover:underline">ویرایش دسترسی</button>
+-                              </td>
+-                            </tr>
++                            {teamMembers.map(member => (
++                              <tr key={member.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
++                                <td className="px-6 py-4">
++                                  <div className="flex items-center gap-3">
++                                    <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 flex items-center justify-center font-bold">{member.name.charAt(0)}</div>
++                                    <div>
++                                      <div className="font-bold text-slate-900 dark:text-white">{member.name}</div>
++                                      <div className="text-xs text-slate-500">{member.email}</div>
++                                    </div>
++                                  </div>
++                                </td>
++                                <td className="px-6 py-4">
++                                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
++                                    {member.role}
++                                  </span>
++                                </td>
++                                <td className="px-6 py-4 max-w-[200px]">
++                                  <div className="flex flex-wrap gap-1">
++                                    {member.modules.map(mod => (
++                                      <span key={mod} className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">{mod}</span>
++                                    ))}
++                                  </div>
++                                </td>
++                                <td className="px-6 py-4">
++                                  <button className="text-blue-600 dark:text-blue-400 text-sm font-bold hover:underline">ویرایش دسترسی</button>
++                                </td>
++                              </tr>
++                            ))}
+                           </tbody>
+                         </table>
+@@ -562,6 +567,49 @@
+           </div>
+         )}
+       </div>
++
++      {/* Invite Modal */}
++      <Modal isOpen={isInviteModalOpen} onClose={() => setIsInviteModalOpen(false)} title="دعوت عضو جدید به تیم">
++        <div className="space-y-4 pt-4">
++          <div>
++            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">ایمیل کاربر</label>
++            <input 
++              type="email" 
++              value={inviteEmail}
++              onChange={(e) => setInviteEmail(e.target.value)}
++              placeholder="user@example.com"
++              className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
++            />
++          </div>
++          <div>
++            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">نقش (Role)</label>
++            <select 
++              value={inviteRole}
++              onChange={(e) => setInviteRole(e.target.value)}
++              className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
++            >
++              <option value="Manager">مدیر (Manager)</option>
++              <option value="Employee">کارمند (Employee)</option>
++              <option value="Receptionist">پذیرش (Receptionist)</option>
++              <option value="Finance">مالی (Finance)</option>
++              <option value="Operator">اپراتور (Operator)</option>
++            </select>
++          </div>
++          <div>
++            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">دسترسی‌ها (Modules)</label>
++            <div className="flex flex-wrap gap-2">
++              {(activeBusiness?.modules || []).map(mod => (
++                <button key={mod} onClick={() => toggleInviteModule(mod)} className={cn("px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors", inviteModules.includes(mod) ? "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-800" : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 dark:bg-slate-950 dark:text-slate-400 dark:border-slate-800 dark:hover:bg-slate-900")}>
++                  {mod}
++                </button>
++              ))}
++            </div>
++          </div>
++          <button onClick={handleInviteUser} disabled={!inviteEmail} className="w-full mt-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 dark:disabled:bg-slate-800 text-white font-bold py-3 rounded-xl transition-colors">
++            ارسال دعوت‌نامه
++          </button>
++        </div>
++      </Modal>
+     </div>
+   );
+ }

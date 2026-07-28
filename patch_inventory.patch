@@ -1,0 +1,80 @@
+--- src/components/SupplierModal.tsx
++++ src/components/SupplierModal.tsx
+@@ -841,30 +841,40 @@
+             {activeTab === 'inventory' && (
+                 <div className="space-y-4 animate-in fade-in">
+                     <div className="flex justify-between items-center border-b border-slate-100/50 dark:border-slate-800/50 pb-3">
+-                        <h3 className="text-sm font-black text-slate-800 dark:text-slate-200 font-sans border-r-4 border-blue-500 pr-3">مدیریت اتاق‌ها و ظرفیت‌ها</h3>
+-                        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors shadow-md hover:shadow-lg cursor-pointer">تعریف اتاق جدید +</button>
++                        <h3 className="text-sm font-black text-slate-800 dark:text-slate-200 font-sans border-r-4 border-blue-500 pr-3">مدیریت اتاق‌ها، سوئیت‌ها و ظرفیت‌ها</h3>
++                        <div className="flex gap-2">
++                            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 flex items-center gap-2 text-xs">
++                              <Search size={14} className="text-slate-400" />
++                              <input type="text" placeholder="جستجوی اتاق..." className="bg-transparent border-none outline-none w-32 dark:text-white" />
++                            </div>
++                            <button onClick={() => setShowAddRoomModal(true)} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer">
++                                <Plus size={14} />
++                                <span>تعریف اتاق جدید</span>
++                            </button>
++                        </div>
+                     </div>
+-                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/50 dark:border-slate-800/50 rounded-2xl overflow-x-auto custom-scrollbar text-xs shadow-sm font-semibold">
++                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/50 dark:border-slate-800/50 rounded-2xl overflow-hidden text-xs shadow-sm font-semibold">
+                         <table className="w-full text-right">
+                             <thead className="bg-slate-50/50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 border-b border-slate-200/50 dark:border-slate-800/50 font-bold">
+                                 <tr>
+                                     <th className="p-4">نوع اتاق</th>
+                                     <th className="p-4">متراژ</th>
+                                     <th className="p-4">نوع تخت‌ها</th>
+                                     <th className="p-4">قیمت هر شب</th>
+                                     <th className="p-4">وضعیت رزروپذیری</th>
++                                    <th className="p-4 text-center">عملیات</th>
+                                 </tr>
+                             </thead>
+                             <tbody className="divide-y divide-slate-100/50 dark:divide-slate-800/50 text-slate-700 dark:text-slate-300">
+-                                <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+-                                    <td className="p-4 font-bold text-slate-900 dark:text-white">اتاق دبل استاندارد (رو به شهر)</td>
+-                                    <td className="p-4 font-mono">۲۴ متر مربع</td>
+-                                    <td className="p-4">۱ تخت کینگ</td>
+-                                    <td className="p-4 font-mono font-bold">۴,۹۶۰,۰۰۰ تومان</td>
+-                                    <td className="p-4"><span className="bg-emerald-100/80 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-md text-[10px] font-black">رزرو فعال</span></td>
+-                                </tr>
+-                                <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+-                                    <td className="p-4 font-bold text-slate-900 dark:text-white">سوئیت جونیور مجلل</td>
+-                                    <td className="p-4 font-mono">۳۶ متر مربع</td>
+-                                    <td className="p-4">۲ تخت دبل استاندارد</td>
+-                                    <td className="p-4 font-mono font-bold">۸,۲۰۰,۰۰۰ تومان</td>
+-                                    <td className="p-4"><span className="bg-emerald-100/80 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-md text-[10px] font-black">رزرو فعال</span></td>
+-                                </tr>
++                                {rooms.map(room => (
++                                  <tr key={room.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
++                                      <td className="p-4 font-bold text-slate-900 dark:text-white">
++                                        <div className="flex flex-col gap-1">
++                                          <span>{room.type}</span>
++                                          <span className="text-[10px] text-slate-500 font-normal line-clamp-1 max-w-[200px]">{room.description}</span>
++                                        </div>
++                                      </td>
++                                      <td className="p-4 font-mono">{toPersianDigits(room.size.toString())} متر مربع</td>
++                                      <td className="p-4">{room.beds}</td>
++                                      <td className="p-4 font-mono font-bold text-blue-600 dark:text-blue-400">{toPersianDigits(room.price.toLocaleString())} تومان</td>
++                                      <td className="p-4">
++                                        {room.status === 'active' ? 
++                                          <span className="bg-emerald-100/80 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-md text-[10px] font-black">رزرو فعال</span> :
++                                          <span className="bg-rose-100/80 dark:bg-rose-900/40 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800 px-2.5 py-1 rounded-md text-[10px] font-black">غیرفعال</span>
++                                        }
++                                      </td>
++                                      <td className="p-4 text-center">
++                                        <div className="flex gap-2 justify-center">
++                                            <button className="text-slate-400 hover:text-blue-600 transition-colors p-1" title="ویرایش">
++                                                <Settings size={14} />
++                                            </button>
++                                            <button className="text-slate-400 hover:text-rose-600 transition-colors p-1" title="حذف" onClick={() => setRooms(prev => prev.filter(r => r.id !== room.id))}>
++                                                <Trash2 size={14} />
++                                            </button>
++                                        </div>
++                                      </td>
++                                  </tr>
++                                ))}
+                             </tbody>
+                         </table>
+                     </div>

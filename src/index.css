@@ -1,0 +1,79 @@
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, monospace;
+
+  /* Premium 2026 Electric Luminous Orange (Primary - mapped to blue) */
+  --color-blue-50: #fff8f3;
+  --color-blue-100: #ffeedc;
+  --color-blue-200: #ffd5b5;
+  --color-blue-300: #ffb380;
+  --color-blue-400: #ff8c42;
+  --color-blue-500: #ff6000;
+  --color-blue-600: #e04f00;
+  --color-blue-700: #b33c00;
+  --color-blue-800: #8c2d00;
+  --color-blue-900: #6e2200;
+  --color-blue-950: #3b0f00;
+
+  /* Premium 2026 Aurora Mint Green (Secondary - mapped to indigo) */
+  --color-indigo-50: #f1fcf5;
+  --color-indigo-100: #daf9e6;
+  --color-indigo-200: #b5f1cd;
+  --color-indigo-300: #82e6aa;
+  --color-indigo-400: #4ad483;
+  --color-indigo-500: #00c261;
+  --color-indigo-600: #009e4d;
+  --color-indigo-700: #007a3a;
+  --color-indigo-800: #005c2a;
+  --color-indigo-900: #004720;
+  --color-indigo-950: #002911;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #f8fafc;
+  color: #0f172a;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark body {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+.custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+html.dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; }
+
+/* Improve price / number layout by keeping letters and digits tight */
+.font-mono {
+  letter-spacing: -0.04em;
+}
+
+/* Custom class for ultra-clean price digits with no letter-spacing gaps */
+.price-digits {
+  font-family: var(--font-sans);
+  letter-spacing: -0.05em;
+}
+
+
+@theme {
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-rtl: marquee-rtl 40s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-rtl {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(50%); }
+}
